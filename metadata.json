@@ -1,0 +1,6 @@
+{
+  "name": "Gemini AI Sandbox",
+  "description": "A proactive, hyper-visualized, last-minute AI productivity coach, priority scheduler, and habit-loop reinforcement companion designed to reduce deadline panic.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

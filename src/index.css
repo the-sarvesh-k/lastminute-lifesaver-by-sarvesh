@@ -1,0 +1,529 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --color-brand-primary: #6366F1;
+  --color-brand-accent: #1D9E75;
+}
+
+/* Custom CSS to handle circular progress and custom elements beautifully */
+body {
+  font-family: var(--font-sans);
+  background-color: #F8F8FA;
+  color: #1F2937;
+}
+
+/* Smooth checkmark animation */
+@keyframes checkScale {
+  0% { transform: scale(0.8); opacity: 0; }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+.check-animate {
+  animation: checkScale 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Skeleton shimmer */
+.shimmer {
+  background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ===== HOVER ANIMATIONS ===== */
+
+/* 1. MAGNETIC LIFT — Task Cards */
+.task-card {
+  border-radius: 16px;
+  overflow: hidden;
+  padding: 16px 18px;
+  transition: transform 0.2s cubic-bezier(.34,1.56,.64,1),
+              box-shadow 0.2s ease;
+  cursor: pointer;
+}
+.task-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+}
+
+/* 2. PULSE GLOW — Buttons */
+.glow-btn {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.glow-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.glow-btn:hover {
+  transform: scale(1.06);
+  box-shadow: 0 0 0 4px rgba(99,102,241,0.25), 0 8px 20px rgba(99,102,241,0.3);
+}
+.glow-btn:hover::after { opacity: 1; }
+.glow-btn:active { transform: scale(0.97); }
+
+/* 3. SHIMMER SWEEP — AI Insight / Coach Card */
+.shimmer-card {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.shimmer-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.55s ease;
+}
+.shimmer-card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(99,102,241,0.2); }
+.shimmer-card:hover::before { left: 160%; }
+
+/* 4. JELLY BOUNCE — Quick Action Icons */
+.jelly-icon {
+  transition: transform 0.3s cubic-bezier(.34,1.7,.64,1), box-shadow 0.3s ease;
+}
+.jelly-icon:hover {
+  transform: scale(1.22) rotate(-6deg);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+.jelly-icon:active { transform: scale(0.9); }
+
+/* 5. BORDER TRACE — Bottom Navigation Items */
+.nav-item-hover {
+  position: relative;
+  overflow: hidden;
+  transition: background 0.2s ease;
+}
+.nav-item-hover::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  width: 0; height: 2px;
+  background: #6366F1;
+  border-radius: 0 0 4px 4px;
+  transition: width 0.25s ease, left 0.25s ease;
+}
+.nav-item-hover:hover::before { width: 80%; left: 10%; }
+.nav-item-hover:hover { background: rgba(99,102,241,0.08); }
+
+/* 6. RIPPLE — Complete / Checkmark Buttons */
+.ripple-btn {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.ripple-btn:hover {
+  transform: scale(1.12);
+  box-shadow: 0 0 0 6px rgba(16,185,129,0.2);
+}
+.ripple-btn:active::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 20px; height: 20px;
+  background: white;
+  border-radius: 50%;
+  transform: translate(-50%,-50%) scale(0);
+  animation: ripple 0.4s linear;
+}
+@keyframes ripple {
+  0%   { transform: translate(-50%,-50%) scale(0); opacity: 0.6; }
+  100% { transform: translate(-50%,-50%) scale(4); opacity: 0; }
+}
+
+/* 7. URGENCY PULSE — Overdue Task Cards */
+@keyframes urgencyPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.4); }
+  50%       { box-shadow: 0 0 0 8px rgba(239,68,68,0); }
+}
+.overdue-pulse {
+  animation: urgencyPulse 2s ease-in-out infinite;
+}
+
+/* ===== QUICK ACTIONS STYLES ===== */
+.quick-action-icon {
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  min-height: 52px;
+  max-width: 52px;
+  max-height: 52px;
+  border-radius: 16px;          /* smooth rounded square */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+  transition: transform 0.3s cubic-bezier(.34,1.6,.64,1),
+              box-shadow 0.25s ease;
+}
+
+.quick-action-icon:hover {
+  transform: scale(1.18) rotate(-5deg);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.18);
+}
+
+.quick-action-icon:active {
+  transform: scale(0.92);
+  transition-duration: 0.1s;
+}
+
+/* Each icon has its own background color */
+.qa-add    { background: #EEF2FF; }   /* soft indigo */
+.qa-plan   { background: #FEF9C3; }   /* soft yellow */
+.qa-prior  { background: #ECFDF5; }   /* soft green  */
+.qa-motiv  { background: #FFF7ED; }   /* soft orange */
+
+.qa-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.quick-actions-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding: 8px 0;
+  gap: 8px;
+}
+
+.qa-label {
+  font-size: 11px;
+  color: #64748B;
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.3;
+  max-width: 64px;
+}
+
+/* ===== FAB BUTTON STYLES ===== */
+
+/* FAB Wrapper — fixed bottom right */
+.fab-wrapper {
+  position: fixed;
+  bottom: 88px;              /* sits above the bottom nav bar */
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  z-index: 999;
+}
+
+/* "Add Task" label above the button */
+.fab-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #6366F1;
+  letter-spacing: 0.04em;
+  background: white;
+  padding: 3px 10px;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(99,102,241,0.2);
+  white-space: nowrap;
+}
+
+/* Circular FAB button */
+.fab-btn {
+  width: 58px;
+  height: 58px;
+  min-width: 58px;
+  min-height: 58px;
+  border-radius: 50%;                            /* perfect circle */
+  background: linear-gradient(135deg, #6366F1, #8B5CF6);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(99,102,241,0.45),
+              0 2px 8px rgba(99,102,241,0.3);
+  transition: transform 0.3s cubic-bezier(.34,1.6,.64,1),
+              box-shadow 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* The "+" icon inside */
+.fab-plus {
+  color: white;
+  font-size: 28px;
+  font-weight: 300;
+  line-height: 1;
+  transition: transform 0.3s cubic-bezier(.34,1.6,.64,1);
+  margin-top: -2px;
+}
+
+/* Hover — rotate + and scale up */
+.fab-btn:hover {
+  transform: scale(1.12);
+  box-shadow: 0 12px 32px rgba(99,102,241,0.55),
+              0 4px 12px rgba(99,102,241,0.4);
+}
+.fab-btn:hover .fab-plus {
+  transform: rotate(90deg);
+}
+
+/* Click press effect */
+.fab-btn:active {
+  transform: scale(0.93);
+  transition-duration: 0.1s;
+}
+
+/* Pulse ring animation — draws attention */
+@keyframes fabPulse {
+  0%   { box-shadow: 0 0 0 0 rgba(99,102,241,0.5),
+                     0 8px 24px rgba(99,102,241,0.4); }
+  70%  { box-shadow: 0 0 0 12px rgba(99,102,241,0),
+                     0 8px 24px rgba(99,102,241,0.4); }
+  100% { box-shadow: 0 0 0 0 rgba(99,102,241,0),
+                     0 8px 24px rgba(99,102,241,0.4); }
+}
+.fab-btn {
+  animation: fabPulse 2.5s ease-out infinite;
+}
+/* Stop pulse on hover so it doesn't conflict */
+.fab-btn:hover {
+  animation: none;
+}
+
+/* ===== GOOGLE CALENDAR SCHEDULE STYLES ===== */
+.schedule-detail-panel {
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.schedule-date-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1E293B;
+  margin: 0 0 16px;
+}
+
+.schedule-section {
+  margin-bottom: 20px;
+}
+
+.schedule-section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #64748B;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.task-dot { color: #6366F1; }
+
+/* Google Calendar Event Card */
+.gcal-event-card {
+  background: #F0F7FF;
+  border: 1px solid #BFDBFE;
+  border-left: 4px solid #3B82F6;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+
+.gcal-event-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.gcal-dot { color: #3B82F6; font-size: 10px; }
+
+.gcal-event-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1E3A5F;
+}
+
+.gcal-event-time {
+  font-size: 12px;
+  color: #3B82F6;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.gcal-event-desc {
+  font-size: 12px;
+  color: #475569;
+  line-height: 1.5;
+  margin-top: 4px;
+}
+
+.gcal-event-location {
+  font-size: 11px;
+  color: #64748B;
+  margin-top: 4px;
+}
+
+.gcal-loading {
+  font-size: 13px;
+  color: #3B82F6;
+  padding: 8px 0;
+  animation: pulse 1.5s infinite;
+}
+
+.empty-state {
+  font-size: 13px;
+  color: #94A3B8;
+  padding: 8px 0;
+  margin: 0;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ===== PRESET CHIPS STYLES ===== */
+.preset-chips-row {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 10px 16px;
+  scrollbar-width: none;
+  border-top: 1px solid #F1F5F9;
+}
+.preset-chips-row::-webkit-scrollbar { display: none; }
+.preset-chip {
+  flex-shrink: 0;
+  font-size: 12px;
+  padding: 7px 14px;
+  border-radius: 20px;
+  border: 1.5px solid #6366F1;
+  color: #6366F1;
+  background: white;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: inherit;
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+.preset-chip:hover {
+  background: #6366F1;
+  color: white;
+  transform: scale(1.03);
+}
+
+/* ===== GLOBAL DARK MODE OVERRIDES ===== */
+#app-root.dark-mode {
+  background-color: #0F172A !important; /* deep slate backgrounds */
+  color: #F8FAFC !important; /* high-contrast text */
+  border-color: #1E293B !important;
+}
+
+#app-root.dark-mode .bg-white,
+#app-root.dark-mode .bg-slate-50,
+#app-root.dark-mode .bg-gray-50,
+#app-root.dark-mode .bg-slate-100/50 {
+  background-color: #1E293B !important; /* slate cards and inputs */
+  color: #F8FAFC !important;
+}
+
+#app-root.dark-mode .border-slate-100,
+#app-root.dark-mode .border-slate-200,
+#app-root.dark-mode .border-gray-100 {
+  border-color: #334155 !important;
+}
+
+#app-root.dark-mode .text-slate-900,
+#app-root.dark-mode .text-slate-800,
+#app-root.dark-mode .text-slate-700,
+#app-root.dark-mode .text-gray-900,
+#app-root.dark-mode .text-gray-800,
+#app-root.dark-mode .text-[#1E293B] {
+  color: #F8FAFC !important;
+}
+
+#app-root.dark-mode .text-slate-600,
+#app-root.dark-mode .text-slate-500,
+#app-root.dark-mode .text-gray-600,
+#app-root.dark-mode .text-gray-500 {
+  color: #CBD5E1 !important;
+}
+
+#app-root.dark-mode .bg-purple-50,
+#app-root.dark-mode .bg-indigo-50 {
+  background-color: #2e1065 !important;
+  color: #e0e7ff !important;
+}
+
+#app-root.dark-mode .text-purple-950,
+#app-root.dark-mode .text-indigo-950 {
+  color: #e0e7ff !important;
+}
+
+#app-root.dark-mode .preset-chip {
+  background-color: #1E293B !important;
+  border-color: #6366F1 !important;
+  color: #818CF8 !important;
+}
+
+#app-root.dark-mode .preset-chip:hover {
+  background-color: #6366F1 !important;
+  color: white !important;
+}
+
+#app-root.dark-mode input[type="text"],
+#app-root.dark-mode input[type="datetime-local"],
+#app-root.dark-mode input[type="date"],
+#app-root.dark-mode select,
+#app-root.dark-mode textarea {
+  background-color: #0F172A !important;
+  color: #F8FAFC !important;
+  border-color: #334155 !important;
+}
+
+#app-root.dark-mode .bg-slate-50.border-slate-100 {
+  background-color: #0F172A !important;
+  border-color: #334155 !important;
+}
+
+#app-root.dark-mode #conflict-warning-alert {
+  background-color: #4c0519 !important; /* deep velvet/rose dark */
+  border-color: #9f1239 !important;
+}
+#app-root.dark-mode #conflict-warning-alert h3 {
+  color: #ffe4e6 !important;
+}
+#app-root.dark-mode #conflict-warning-alert p {
+  color: #fecdd3 !important;
+}
+#app-root.dark-mode #conflict-warning-alert .bg-white\/80 {
+  background-color: #1e293b !important;
+  border-color: #9f1239 !important;
+}
+#app-root.dark-mode #conflict-warning-alert .text-slate-800 {
+  color: #f8fafc !important;
+}
+#app-root.dark-mode #conflict-warning-alert .text-red-700,
+#app-root.dark-mode #conflict-warning-alert .text-red-600 {
+  color: #fda4af !important;
+}
+
+
+
+
