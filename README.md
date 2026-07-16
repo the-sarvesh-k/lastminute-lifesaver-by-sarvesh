@@ -6,7 +6,7 @@
 
 This contains everything you need to run your app locally.
 
-View your app in AI Studio: https://ai.studio/apps/94aac8b3-a3e3-4445-a503-59c2ea0fb197
+View your app in AI Studio: https://lastminute-lifesaver-by-sarvesh-986957769406.us-west1.run.app/
 
 ## Run Locally
 
